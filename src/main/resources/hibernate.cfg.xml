@@ -19,5 +19,7 @@
         <mapping class="ru.job4j.hibernate.hql.model.Candidate" />
         <mapping class="ru.job4j.hibernate.mapping.tomany.model.Mark" />
         <mapping class="ru.job4j.hibernate.mapping.tomany.model.Model" />
+        <mapping class="ru.job4j.hibernate.mapping.manytomany.model.Author" />
+        <mapping class="ru.job4j.hibernate.mapping.manytomany.model.Book" />
     </session-factory>
 </hibernate-configuration>
