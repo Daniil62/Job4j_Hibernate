@@ -7,10 +7,9 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import ru.job4j.hibernate.hql.model.Candidate;
 
-import java.io.Closeable;
 import java.util.List;
 
-public class CandidateHQLStore implements Closeable {
+public class CandidateHQLStore implements AutoCloseable {
 
     private final StandardServiceRegistry registry;
     private final Session session;
@@ -53,16 +52,23 @@ public class CandidateHQLStore implements Closeable {
 
     public Candidate findById(long id) {
         session.beginTransaction();
-        Candidate result = session.get(Candidate.class, id);
+        Candidate result = session.createQuery(
+                "select distinct c from Candidate c "
+                        + "join fetch c.store s join fetch s.vacancies v "
+                        + "where c.id = :id", Candidate.class)
+                .setParameter("id", id)
+                .uniqueResult();
         session.getTransaction().commit();
         return result;
     }
 
     public List<Candidate> findByName(String name) {
         session.beginTransaction();
-        List result = session
-                .createQuery("from Candidate where name = :fName")
-                .setParameter("fName", name)
+        List result = session.createQuery(
+                "select distinct c from Candidate c "
+                        + "join fetch c.store s join fetch s.vacancies v "
+                        + "where c.name = :name", Candidate.class)
+                .setParameter("name", name)
                 .list();
         session.getTransaction().commit();
         return result;

@@ -1,22 +1,31 @@
 package ru.job4j.hibernate.hql;
 
 import ru.job4j.hibernate.hql.model.Candidate;
+import ru.job4j.hibernate.hql.model.Vacancy;
+import ru.job4j.hibernate.hql.model.VacancyStore;
 import ru.job4j.hibernate.hql.store.CandidateHQLStore;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class StartUI {
 
     public static void main(String[] args) {
-
         CandidateHQLStore store = new CandidateHQLStore();
+
+        VacancyStore vacancyStore = new VacancyStore(Set.of(
+                new Vacancy("Senior C++ developer", "desc. ..."),
+                new Vacancy("Junior C++ developer", "desc. ..."),
+                new Vacancy("Middle C++ developer", "desc. ..."),
+                new Vacancy("Senior C# developer", "desc. ...")));
+
         List<Candidate> candidates = List.of(
-                new Candidate("Ivan", 2, 150000),
-                new Candidate("Cyrill", 3, 200000),
-                new Candidate("Olga", 3, 200000),
-                new Candidate("Ivan", 4, 250000),
-                new Candidate("Irina", 2, 150000)
+                new Candidate("Ivan", 2, 150000, vacancyStore),
+                new Candidate("Cyrill", 3, 200000, vacancyStore),
+                new Candidate("Olga", 3, 200000, vacancyStore),
+                new Candidate("Ivan", 4, 250000, vacancyStore),
+                new Candidate("Irina", 2, 150000, vacancyStore)
         );
 
         candidates = candidates

@@ -13,6 +13,8 @@ public class Candidate {
     private String name;
     private int experience;
     private int salary;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private VacancyStore store;
 
     public Candidate() {
     }
@@ -21,17 +23,19 @@ public class Candidate {
         this.id = id;
     }
 
-    public Candidate(String name, int experience, int salary) {
+    public Candidate(String name, int experience, int salary, VacancyStore store) {
         this.name = name;
         this.experience = experience;
         this.salary = salary;
+        this.store = store;
     }
 
-    public Candidate(long id, String name, int experience, int salary) {
+    public Candidate(long id, String name, int experience, int salary, VacancyStore store) {
         this.id = id;
         this.name = name;
         this.experience = experience;
         this.salary = salary;
+        this.store = store;
     }
 
     public long getId() {
@@ -66,6 +70,14 @@ public class Candidate {
         this.salary = salary;
     }
 
+    public VacancyStore getStore() {
+        return store;
+    }
+
+    public void setStore(VacancyStore store) {
+        this.store = store;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Candidate)) {
@@ -83,7 +95,8 @@ public class Candidate {
     @Override
     public String toString() {
         String n = System.lineSeparator();
-        return String.format(" id: %d%s name: %s%s experience: %d%s salary: %d%s",
-                id, n, name, n, experience, n, salary, n);
+        return String.format(" id: %d%s name: %s%s experience: "
+                        + "%d%s salary: %d%s vacancies: %s%s%s",
+                id, n, name, n, experience, n, salary, n, n, store.toString(), n);
     }
 }
